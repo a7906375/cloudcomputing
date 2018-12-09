@@ -1,0 +1,4 @@
+Numpy
+Flask
+Redis
+docker

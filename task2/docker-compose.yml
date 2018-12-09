@@ -1,0 +1,40 @@
+version: "3"
+services:
+  web:
+    # replace username/repo:tag with your name and image details
+    image: nclcloudcomputing/javabenchmarkapp
+    deploy:
+      replicas: 2
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "8080:8080"
+    networks:
+      - webnet
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "3306:27017"
+
+  mongo-express:
+    image: mongo-express
+    restart: always 
+    ports: 
+      - "8085:8081"
+
+  visualizer:
+    image: dockersamples/visualizer
+    ports:
+      - "80:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - webnet
+
+networks:
+  webnet:
